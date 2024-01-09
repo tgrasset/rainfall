@@ -1,0 +1,12 @@
+- The binary executable in the home folder of level0 :
+    - Segfaults with no arguments
+    - prints "No!" with a random argument, and exits
+
+- We decided to disassemble it with gdb and saw a few things :
+    - A call to atoi made us think that the argument probably needed to be numbers
+    - Right after it, a comparison between the return value of atoi with a hard coded value (cmp    $0x1a7,%eax), 0x1a7 in hexa corresponds to 423 in decimal
+    - Calls to getegid, geteuid, setresgid, setresuid, that we assumed made the program run with level1 privileges
+
+- So we launched the program again with 423 as first arg
+
+- All that was left to do was : cat /home/user/level1/.pass to see the password

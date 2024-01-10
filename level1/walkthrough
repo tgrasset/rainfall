@@ -14,8 +14,14 @@ function so that the program knows where to jump.
     - The memory address of the run() function
 
 - We tried to "play" with the program and give it different string sizes and ended up finding out 
-    that the buffer was 76 bytes.
+    that it segfaults for a string of 76 bytes or more.
 - In objdump, we saw the address of the run() function was 0x08048444
+
+- Through disassemble of the main function, we could also infer the exact size of the buffer given to
+    gets():
+        - sub    $0x50,%esp   --> 80 bytes allocated for the stack frame of the function 
+        - lea    0x10(%esp),%eax --> buffer starts 16 bytes after the address contained in esp
+       
 
 - Then we used a python command (much easier to format payloads) to fill the buffer with 'A's and add
     the address of run() in order to modify the return address of the main() function once popped on EIP:

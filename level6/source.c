@@ -10,7 +10,7 @@ void m() {
 }
 
 int main(int ac, char **av) {
-    char *buffer;
+    int *buffer;
     void (**f)(void);
 
     buffer = (char *)malloc(64);

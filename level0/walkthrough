@@ -5,8 +5,6 @@
 - We decided to disassemble it with gdb and saw a few things :
     - A call to atoi made us think that the argument probably needed to be numbers
     - Right after it, a comparison between the return value of atoi with a hard coded value (cmp    $0x1a7,%eax), 0x1a7 in hexa corresponds to 423 in decimal
-    - Calls to getegid, geteuid, setresgid, setresuid, that made the program run with level1 privileges
-
-- So we launched the program again with 423 as first arg, which execv /bin/sh with level1 privileges
+    - So we launched the program again with 423 as first arg, which execv /bin/sh with level1 privileges
 
 - All that was left to do was : cat /home/user/level1/.pass to see the password
